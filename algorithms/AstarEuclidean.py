@@ -8,6 +8,6 @@ class AstarEuclidean:
         self.explored = set()
         self.frontier_U_explored = set()
 
-    def run_algorithm(self) -> bool:
+    def run_algorithm(self) ->bool:
         ...
         # WRITE ALGORITHM HERE
