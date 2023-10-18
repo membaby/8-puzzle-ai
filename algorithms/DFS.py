@@ -1,14 +1,25 @@
+from algorithms.utils import get_neighbors
+from collections import deque
+
 class DFS:
-    def __init__(self, initial_state):
-        self.initial_state = initial_state
+    def __init__(self, initial_state, goal_state):
+        self.goal_state = goal_state
+        self.frontier = deque([initial_state])
+        self.explored = set()
+        self.frontier_U_explored = set()
 
     def run_algorithm(self):
-        solution = []       # 2-D ARRAY
-        steps = []          # 2-D ARRAY of 2-D ARRAYS [[sol_1], [sol_2], ...]
-        cost_of_path = 0    # INTEGER
-        nodes_expanded = [] # 1-D LIST OF NODES
-        search_depth = 0    # INTEGER
+        while self.frontier:
+            state = self.frontier.pop()
+            self.explored.add(state)
+            self.frontier_U_explored.add(state)
 
-        # INSERT YOUR ALGO HERE
+            if state == self.goal_state:
+                return True
+        
+            for neighbor in get_neighbors(state):
+                if neighbor not in self.frontier_U_explored: # TO BE OPTIMIZED LATER
+                    self.frontier.append(neighbor)   
+                    self.frontier_U_explored.add(neighbor)
 
-        return solution, steps, cost_of_path, nodes_expanded, search_depth
+        return False

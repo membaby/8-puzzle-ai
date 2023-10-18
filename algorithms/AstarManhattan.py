@@ -1,7 +1,7 @@
 from algorithms.utils import get_neighbors
 from collections import deque
 
-class BFS:
+class AstarManhattan:
     def __init__(self, initial_state, goal_state):
         self.goal_state = goal_state
         self.frontier = deque([initial_state])

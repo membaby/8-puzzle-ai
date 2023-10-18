@@ -18,18 +18,19 @@ if __name__ == '__main__':
     print('         [1] Depth-First Search')
     print('         [2] Breadth-First Search')
     print('     [-] Informed Search Methods:')
-    print('         [3] A* Search')
+    print('         [3] A* Search - Manhattan Distance')
+    print('         [4] A* Search - Euclidean Distance')
 
     while True:
         user_choice_algorithm = input('Your Choice: ')
-        if user_choice_algorithm in ['1', '2', '3']: break
+        if user_choice_algorithm in ['1', '2', '3', '4']: break
         print('[!] Invalid choice.')
     
     # Stage 2: Initial State
-    initial_state = []
+    initial_state = ''
     print('[ ] Enter 8-Puzzle Initial State:')
     for i in range(3):
-        row = [x for x in input().split(' ')]
+        row = input().replace(' ', '')
 
         # Invalid Input - Error Handler
         if len(row) != 3:
@@ -39,21 +40,26 @@ if __name__ == '__main__':
             print("I can't solve puzzles containing non-numeric values.")
             exit()
         
-        initial_state.append([int(x) for x in row])
+        initial_state += row
+    initial_state += str(initial_state.index('0'))
+    # initial_state example: 1234567808
 
     # Stage 3: Solvers
+    goal_state = '0123456780'
     solver = Solver()
-    solution, steps, cost_of_path, nodes_expanded, search_depth, running_time = solver.solve(user_choice_algorithm, initial_state)
+    # solution, steps, cost_of_path, nodes_expanded, search_depth, running_time = solver.solve(user_choice_algorithm, initial_state, goal_state)
+    solution, running_time = solver.solve(user_choice_algorithm, initial_state, goal_state)
+    print('Solution:', solution)
+    print('Time:', running_time)
 
     # Stage 4: Results
-    print()
-    for i in range(len(steps)):
-        if len(steps) - 1 != i:
-            print_puzzle(steps[i], steps[i+1], f'Step #{i+1}')
-    print()
-    print('.:[ SOLUTION STATS ]:.')
-    print('[ ] [bold]Cost of Path[/bold]:', cost_of_path)
-    print('[ ] [bold]Nodes Expanded[/bold]:', str(set(nodes_expanded)))
-    print('[ ] [bold]Search Depth[/bold]:', search_depth)
-    print('[ ] [bold]Running Time[/bold]:', running_time)
-    
+    # print()
+    # for i in range(len(steps)):
+    #     if len(steps) - 1 != i:
+    #         print_puzzle(steps[i], steps[i+1], f'Step #{i+1}')
+    # print()
+    # print('.:[ SOLUTION STATS ]:.')
+    # print('[ ] [bold]Cost of Path[/bold]:', cost_of_path)
+    # print('[ ] [bold]Nodes Expanded[/bold]:', str(set(nodes_expanded)))
+    # print('[ ] [bold]Search Depth[/bold]:', search_depth)
+    # print('[ ] [bold]Running Time[/bold]:', running_time)
