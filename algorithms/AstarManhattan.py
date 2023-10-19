@@ -1,53 +1,39 @@
 from algorithms.utils import get_neighbors
-import heapq
-
+import heapq as hq
+import math
+import time
 
 class AstarManhattan:
-    def init(self, initial_state, goal_state):
+    def __init__(self, initial_state, goal_state):
         self.goal_state = goal_state
-        self.frontier = []  # Use a list as a priority queue
+        self.frontier = [(self.heuristic(initial_state), 0, initial_state, initial_state)]
         self.explored = set()
-        self.frontier_U_explored = set()
-        heapq.heappush(self.frontier, (0, initial_state))
-        self.parent = {initial_state: (initial_state, 0, 0)}
+        self.parent = {}
 
-    def run_algorithm(self) -> bool:
+    def run_algorithm(self):
+
         while self.frontier:
-            # Get the node with the lowest key (number)
-            cost, node = heapq.heappop(self.frontier)
+            _, c, par, current_state = hq.heappop(self.frontier)
 
-            if node in self.explored:
+            if current_state in self.explored:
                 continue
 
-            if self.parent[node][0] == node:  # Root Node
-                self.parent[node][2] = self.manhattan(node, 0)
+            self.explored.add(current_state)
+            self.parent[current_state] = par
 
-            self.explored.add(node)
-            self.frontier_U_explored.add(node)
+            if current_state == self.goal_state:
+                return self.parent
 
-            if node == self.goal_state:
-                return True
+            for neighbor in get_neighbors(current_state):
+                if neighbor not in self.explored:
+                    hq.heappush(self.frontier, (self.heuristic(neighbor)+c+1, c+1, current_state, neighbor))
 
-            next_states = get_neighbors(node)
-            for i in range(len(next_states)):
-                heuristic = self.manhattan(next_states[i], self.parent[next_states[i]][2])
-                priority = cost + heuristic
-
-                # Update the parent if the new priority is better
-                if next_states[i] not in self.frontier_U_explored or priority < self.parent[next_states[i]][1]:
-                    self.parent[next_states[i]] = (node, priority, heuristic)
-                    heapq.heappush(self.frontier, (priority, next_states[i]))
-                    self.frontier_U_explored.add(next_states[i])
-
-        return False
-
-    def manhattan(self, curr_state, prev_state, prev_heuristic):
-        zero_curr = int(curr_state[10])
-        zero_prev = int(prev_state[10])
-        num_prev = zero_curr
-        num_curr = zero_prev
-
-        prev_heuristic = prev_heuristic + zero_curr // 3 + zero_curr % 3 + num_curr // 3 + num_curr % 3
-        prev_heuristic = prev_heuristic - zero_prev // 3 - zero_prev % 3 - num_prev // 3 - num_prev % 3
-
-        return prev_heuristic
+    def heuristic(self, state):
+        h = 0
+        for i in range(9):
+            goal_x = int(self.goal_state[i]) // 3
+            goal_y = int(self.goal_state[i]) % 3
+            current_x = int(state[i]) // 3
+            current_y = int(state[i]) % 3
+            h += abs(goal_x - current_x) + abs(goal_y - current_y)
+        return h
