@@ -16,10 +16,11 @@ class BFS:
             self.frontier_U_explored.add(curr)
 
             if curr== self.goal_state:
-                return
+                return True
             
             for neighbor in get_neighbors(curr):
                  if neighbor not in self.frontier_U_explored:
                      self.frontier.append(neighbor)
                      self.frontier_U_explored.add(neighbor)
                      self.parent_map[neighbor]=curr
+        return False

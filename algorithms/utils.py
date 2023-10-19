@@ -52,7 +52,7 @@ def is_solvable(state):
         for j in range(i + 1, 8):
             if state[i] != '0' and state[j] != '0' and state[i] > state[j]:
                 inversion_count += 1
-    return inversion_count % 2 == 0
+    return inversion_count % 2 == 0 #true when it is even
 
 # 1 2 3
 # 0 4 5

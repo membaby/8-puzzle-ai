@@ -19,16 +19,16 @@ class Solver:
             solver = AstarManhattan(initial_state, goal_state)
         else:
             solver = AstarEuclidean(initial_state, goal_state)
-
+        res=False
         start_time = time.time()
         solution = is_solvable(initial_state)
         if solution:
-            solver.run_algorithm()
+            res= solver.run_algorithm()
         end_time = time.time()
-
+        expanded=solver.explored
         running_time = round(end_time - start_time, 5)
 
-        if solution:
+        if res:
             # the path to the goal (list of all states)
             steps = [goal_state]
             back_tracked_node = goal_state
@@ -36,6 +36,6 @@ class Solver:
                 steps.append(solver.parent_map[back_tracked_node])
                 back_tracked_node = solver.parent_map[back_tracked_node]
             steps.reverse()
-            return solution, steps, len(steps)-1, len(solver.parent_map), len(steps)-1, running_time
+            return solution, steps, len(steps)-1, len(expanded)-1, len(steps)-1, running_time
 
         return solution, [], 0, 0, 0, running_time

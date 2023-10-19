@@ -22,11 +22,13 @@ class AstarEuclidean:
             self.parent_map[current_state] = par
 
             if current_state == self.goal_state:
-                return
+                return True
 
             for neighbor in get_neighbors(current_state):
                 if neighbor not in self.explored:
                     hq.heappush(self.frontier, (self.heuristic(neighbor) + c + 1, c + 1, current_state, neighbor))
+        return False
+
 
     def heuristic(self, state):
         h = 0
