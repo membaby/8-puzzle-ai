@@ -8,7 +8,7 @@ class AstarManhattan:
         self.goal_state = goal_state
         self.frontier = [(self.heuristic(initial_state), 0, initial_state, initial_state)]
         self.explored = set()
-        self.parent = {}
+        self.parent_map = {}
 
     def run_algorithm(self):
 
@@ -19,10 +19,10 @@ class AstarManhattan:
                 continue
 
             self.explored.add(current_state)
-            self.parent[current_state] = par
+            self.parent_map[current_state] = par
 
             if current_state == self.goal_state:
-                return self.parent
+                return
 
             for neighbor in get_neighbors(current_state):
                 if neighbor not in self.explored:

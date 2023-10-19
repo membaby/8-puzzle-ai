@@ -9,18 +9,17 @@ class DFS:
         self.frontier_U_explored = set()
         self.parent_map={initial_state:initial_state} #dictionary
 
-    def run_algorithm(self) ->bool:
+    def run_algorithm(self):
         while self.frontier:
             state = self.frontier.pop()
             self.explored.add(state)
             self.frontier_U_explored.add(state)
 
             if state == self.goal_state:
-                return True,self.parent_map
-        
+                return
+
             for neighbor in get_neighbors(state):
                 if neighbor not in self.frontier_U_explored: # TO BE OPTIMIZED LATER
                     self.frontier.append(neighbor)   
                     self.frontier_U_explored.add(neighbor)
                     self.parent_map[neighbor]=state
-        return False

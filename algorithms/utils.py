@@ -46,6 +46,14 @@ def move_right(board_str):
     board_list[-1] = str(key + 1)
     return ''.join(board_list)
 
+def is_solvable(state):
+    inversion_count = 0
+    for i in range(8):
+        for j in range(i + 1, 8):
+            if state[i] != '0' and state[j] != '0' and state[i] > state[j]:
+                inversion_count += 1
+    return inversion_count % 2 == 0
+
 # 1 2 3
 # 0 4 5
 # 6 7 8
