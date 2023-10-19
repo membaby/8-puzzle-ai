@@ -12,12 +12,17 @@ import csv
 import concurrent.futures
 
 def run_thread(solver, user_choice_algorithm, initial_state, goal_state):
-    solution, running_time = solver.solve(user_choice_algorithm, initial_state, goal_state)
-    solutions.append([initial_state, solution, running_time])
-    if solution:
-        print(f'Solution found for {initial_state}.')
-    else:
-        print(f'No solution found for {initial_state}.')
+    try:
+        solution, steps, cost_of_path, nodes_expanded, search_depth, running_time = solver.solve(user_choice_algorithm, initial_state, goal_state)
+        solutions.append([initial_state, solution, running_time])
+        if solution:
+            print(f'Solution found for {initial_state}.')
+        else:
+            print(f'No solution found for {initial_state}.')
+    except Exception as err:
+        print(f'Error occured while solving {initial_state}.')
+        print(err)
+        quit()
 
 if __name__ == '__main__':
     print('.:[ 8-Puzzle Batch Solver ]:.')
@@ -39,7 +44,7 @@ if __name__ == '__main__':
     solutions = []
     solver = Solver()
     test_cases = [x.strip() for x in open('tests/tests.txt', 'r')]
-    sample = random.sample(test_cases, 100)
+    sample = random.sample(test_cases, sample_size)
     goal_state = '0123456780'
 
     executor = concurrent.futures.ThreadPoolExecutor(max_workers=8)
