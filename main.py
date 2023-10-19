@@ -57,7 +57,7 @@ if __name__ == '__main__':
     # initial_state example: 1234567808
 
     # Stage 3: Solvers
-    goal_state = '1234567808'
+    goal_state = '0123456780'
     solver = Solver()
     solution, steps, cost_of_path, nodes_expanded, search_depth, running_time = solver.solve(user_choice_algorithm, initial_state, goal_state)
     # solution, running_time, list_of_states = solver.solve(user_choice_algorithm, initial_state, goal_state)
