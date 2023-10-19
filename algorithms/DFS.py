@@ -17,9 +17,9 @@ class DFS:
 
             if state == self.goal_state:
                 return
-
-            for neighbor in get_neighbors(state):
-                if neighbor not in self.frontier_U_explored: # TO BE OPTIMIZED LATER
+        
+            for neighbor in get_neighbors(state)[::-1]:
+                if neighbor not in self.frontier_U_explored:
                     self.frontier.append(neighbor)   
                     self.frontier_U_explored.add(neighbor)
                     self.parent_map[neighbor]=state
