@@ -14,7 +14,7 @@ import concurrent.futures
 def run_thread(solver, user_choice_algorithm, initial_state, goal_state):
     try:
         solution, steps, cost_of_path, nodes_expanded, search_depth, running_time = solver.solve(user_choice_algorithm, initial_state, goal_state)
-        solutions.append([initial_state, solution, running_time])
+        solutions[user_choice_algorithm][initial_state] = [solution, len(steps), nodes_expanded, search_depth, running_time]
         if solution:
             print(f'Solution found for {initial_state}.')
         else:
@@ -25,23 +25,8 @@ def run_thread(solver, user_choice_algorithm, initial_state, goal_state):
         quit()
 
 if __name__ == '__main__':
-    print('.:[ 8-Puzzle Batch Solver ]:.')
-    print('[ ] Please select an algorithm:')
-    print('     [-] Uninformed Search Methods:')
-    print('         [1] Depth-First Search')
-    print('         [2] Breadth-First Search')
-    print('     [-] Informed Search Methods:')
-    print('         [3] A* Search - Manhattan Distance')
-    print('         [4] A* Search - Euclidean Distance')
-
-    while True:
-        user_choice_algorithm = input('Your Choice: ')
-        if user_choice_algorithm in ['1', '2', '3', '4']: break
-        print('[!] Invalid choice.')
-
     sample_size = int(input('Enter sample size: '))
-    
-    solutions = []
+    solutions = {'1': {},'2': {},'3': {},'4': {}}
     solver = Solver()
     test_cases = [x.strip() for x in open('tests/tests.txt', 'r')]
     sample = random.sample(test_cases, sample_size)
@@ -49,11 +34,18 @@ if __name__ == '__main__':
 
     executor = concurrent.futures.ThreadPoolExecutor(max_workers=8)
     for initial_state in sample:
-        executor.submit(run_thread, solver, user_choice_algorithm, initial_state, goal_state)
+        executor.submit(run_thread, solver, '1', initial_state, goal_state)
+        executor.submit(run_thread, solver, '2', initial_state, goal_state)
+        executor.submit(run_thread, solver, '3', initial_state, goal_state)
+        executor.submit(run_thread, solver, '4', initial_state, goal_state)
     executor.shutdown(wait=True)
 
     with open('tests/results.csv', 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow(['Initial State', 'Solution', 'Running Time'])
-        for solution in solutions:
-            writer.writerow(solution)
+        writer.writerow(['Initial State'] + ['Solution', 'Steps', 'Nodes Expanded', 'Search Depth', 'Running Time'] * 4)
+        for initial_state in solutions['1']:
+            row = []
+            row.append(initial_state)
+            for algorithm in solutions:
+                row.extend(solutions[algorithm][initial_state])
+            writer.writerow(row)

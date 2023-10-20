@@ -30,12 +30,16 @@ class Solver:
 
         if res:
             # the path to the goal (list of all states)
-            steps = [goal_state]
-            back_tracked_node = goal_state
-            while back_tracked_node != initial_state and back_tracked_node in solver.parent_map:
-                steps.append(solver.parent_map[back_tracked_node])
-                back_tracked_node = solver.parent_map[back_tracked_node]
+            steps = [res.board]
+            while res.parent != None:
+                steps.append(res.parent.board)
+                res = res.parent
+            # back_tracked_node = goal_state
+            # while back_tracked_node != initial_state and back_tracked_node in solver.parent_map:
+            #     steps.append(solver.parent_map[back_tracked_node])
+            #     back_tracked_node = solver.parent_map[back_tracked_node]
+            
             steps.reverse()
-            return solution, steps, len(steps)-1, len(expanded)-1, len(steps)-1, running_time
+            return solution, steps, len(steps)-1, len(expanded), solver.max_depth, running_time
 
         return solution, [], 0, 0, 0, running_time

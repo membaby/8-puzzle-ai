@@ -8,18 +8,22 @@ def print_puzzle(state, prev_state, title):
     table.add_column("Parent", justify="center", style="cyan", no_wrap=True)
     table.add_column("Child", justify="center", style="magenta", no_wrap=True)
     for i in range(3):
-        table.add_row(' '.join([str(x) for x in state[i]]), ' '.join([str(x) for x in prev_state[i]]))
+        table.add_row(' '.join([str(x) for x in state[i*3:(i+1)*3]]), ' '.join([str(x) for x in prev_state[i*3:(i+1)*3]]))
     print(table)
 
-
-def print_states(list_of_state):
-    for i in range(0, len(list_of_state)):
-        state = list_of_state[i]
-        print(state[0], state[1], state[2])
-        print(state[3], state[4], state[5])
-        print(state[6], state[7], state[8])
-        print("_____")
-        print()
+def get_movement(from_state, to_state):
+    zero_index_from = from_state.index('0')
+    zero_index_to = to_state.index('0')
+    if zero_index_from == zero_index_to + 1:
+        return 'Right'
+    elif zero_index_from == zero_index_to - 1:
+        return 'Left'
+    elif zero_index_from == zero_index_to + 3:
+        return 'Down'
+    elif zero_index_from == zero_index_to - 3:
+        return 'Up'
+    else:
+        return 'Invalid'
 
 
 if __name__ == '__main__':
@@ -53,25 +57,34 @@ if __name__ == '__main__':
             exit()
 
         initial_state += row
+
+    if '0' not in initial_state:
+        print("I can't solve puzzles without a blank tile.")
+        exit()
+    elif initial_state.count('0') > 1:
+        print("I can't solve puzzles with more than one blank tile.")
+        exit()
+
     initial_state += str(initial_state.index('0'))
-    # initial_state example: 1234567808
 
     # Stage 3: Solvers
     goal_state = '0123456780'
     solver = Solver()
     solution, steps, cost_of_path, nodes_expanded, search_depth, running_time = solver.solve(user_choice_algorithm, initial_state, goal_state)
-    # solution, running_time, list_of_states = solver.solve(user_choice_algorithm, initial_state, goal_state)
-    # print('Solution:', solution)
-    # print('Time:', running_time)
-    # print('path to the goal:')
-    # print_states(list_of_states)
 
     # Stage 4: Results
+    PRINT_STEPS = True # Set to False to disable printing steps
     print()
-    print_states(steps)
+    if steps and PRINT_STEPS:
+        for i in range(len(steps)):
+            if i == len(steps) - 1: break
+            movement = get_movement(steps[i+1], steps[i])
+            print_puzzle(steps[i], steps[i+1], f'Step {i + 1}: {movement}')
+    elif steps:
+        print_puzzle(steps[0], steps[-1], 'Initial & Goal')
     print()
     print('.:[ SOLUTION STATS ]:.')
-    print('[ ] [bold]Cost of Path[/bold]:', cost_of_path)
-    print('[ ] [bold]Nodes Expanded[/bold]:', nodes_expanded)
-    print('[ ] [bold]Search Depth[/bold]:', search_depth)
-    print('[ ] [bold]Running Time[/bold]:', running_time)
+    print('• [bold]Cost of Path[/bold]:', cost_of_path)
+    print('• [bold]Nodes Expanded[/bold]:', nodes_expanded)
+    print('• [bold]Search Depth[/bold]:', search_depth)
+    print('• [bold]Running Time[/bold]:', running_time)
