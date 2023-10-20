@@ -8,13 +8,12 @@ class AstarEuclidean:
         self.goal_state = goal_state
         self.initial_state = initial_state
         self.frontier = []
-        self.frontier = []
         self.explored = set()
         self.max_depth = 0
-        # self.parent_map = {}
 
     def run_algorithm(self):
-        hq.heappush(self.frontier, (self.heuristic(State(self.initial_state)), 0, State(self.initial_state), State(self.initial_state)))
+        state = State(self.initial_state)
+        hq.heappush(self.frontier, (self.heuristic(state), 0, state, state))
         while self.frontier:
             _, c, par, state = hq.heappop(self.frontier)
 
@@ -22,8 +21,6 @@ class AstarEuclidean:
                 continue
 
             self.explored.add(state.board)
-            # self.parent_map[current_state] = par
-
             if state.board == self.goal_state:
                 return state
 
@@ -31,6 +28,7 @@ class AstarEuclidean:
                 if neighbor.board not in self.explored:
                     hq.heappush(self.frontier, (self.heuristic(neighbor) + c + 1, c + 1, state, neighbor))
                     self.max_depth = max(self.max_depth, neighbor.depth)
+
         return False
 
 
