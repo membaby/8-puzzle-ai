@@ -73,15 +73,18 @@ if __name__ == '__main__':
     solution, steps, cost_of_path, nodes_expanded, search_depth, running_time = solver.solve(user_choice_algorithm, initial_state, goal_state)
 
     # Stage 4: Results
-    PRINT_STEPS = True # Set to False to disable printing steps
     print()
-    if steps and PRINT_STEPS:
-        for i in range(len(steps)):
-            if i == len(steps) - 1: break
-            movement = get_movement(steps[i+1], steps[i])
-            print_puzzle(steps[i], steps[i+1], f'Step {i + 1}: {movement}')
-    elif steps:
-        print_puzzle(steps[0], steps[-1], 'Initial & Goal')
+    if solution:
+        PRINT_STEPS = True # Set to False to disable printing steps
+        if steps and PRINT_STEPS:
+            for i in range(len(steps)):
+                if i == len(steps) - 1: break
+                movement = get_movement(steps[i+1], steps[i])
+                print_puzzle(steps[i], steps[i+1], f'Step {i + 1}: {movement}')
+        elif steps:
+            print_puzzle(steps[0], steps[-1], 'Initial & Goal')
+    else:
+        print('[red][!][/red] No solution found.')
     print()
     print('.:[ SOLUTION STATS ]:.')
     print('• [bold]Cost of Path[/bold]:', cost_of_path)

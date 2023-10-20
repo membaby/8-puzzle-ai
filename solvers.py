@@ -25,7 +25,7 @@ class Solver:
         if solution:
             res= solver.run_algorithm()
         end_time = time.time()
-        expanded=solver.explored
+        expanded = solver.explored
         running_time = round(end_time - start_time, 5)
 
         if res:
@@ -42,4 +42,4 @@ class Solver:
             steps.reverse()
             return solution, steps, len(steps)-1, len(expanded), solver.max_depth, running_time
 
-        return solution, [], 0, 0, 0, running_time
+        return solution, [], 0, len(expanded), solver.max_depth, running_time
