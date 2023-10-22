@@ -74,12 +74,14 @@ if __name__ == '__main__':
 
     # Stage 4: Results
     print()
+    movements = []
     if solution:
         PRINT_STEPS = True # Set to False to disable printing steps
         if steps and PRINT_STEPS:
             for i in range(len(steps)):
                 if i == len(steps) - 1: break
                 movement = get_movement(steps[i+1], steps[i])
+                movements.append(movement)
                 print_puzzle(steps[i], steps[i+1], f'Step {i + 1}: {movement}')
         elif steps:
             print_puzzle(steps[0], steps[-1], 'Initial & Goal')
@@ -87,6 +89,7 @@ if __name__ == '__main__':
         print('[red][!][/red] No solution found.')
     print()
     print('.:[ SOLUTION STATS ]:.')
+    print('• [bold]Path[/bold]:', ' -> '.join(movements))
     print('• [bold]Cost of Path[/bold]:', cost_of_path)
     print('• [bold]Nodes Expanded[/bold]:', nodes_expanded)
     print('• [bold]Search Depth[/bold]:', search_depth)

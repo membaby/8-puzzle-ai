@@ -48,8 +48,8 @@ def move_right(state):
 
 def is_solvable(state):
     inversion_count = 0
-    for i in range(8):
-        for j in range(i + 1, 8):
+    for i in range(9):
+        for j in range(i + 1, 9):
             if state[i] != '0' and state[j] != '0' and state[i] > state[j]:
                 inversion_count += 1
     return inversion_count % 2 == 0 #true when it is even
@@ -62,15 +62,3 @@ class State:
     
     def __lt__(self, other):
         return self.board < other.board
-
-# 1 2 3
-# 0 4 5
-# 6 7 8
-
-# neighbors = get_neighbors('1230456783')
-# for neighbor in neighbors:
-#     print(neighbor[:3])
-#     print(neighbor[3:6])
-#     print(neighbor[6:9])
-#     print(neighbor[-1])
-#     print()
