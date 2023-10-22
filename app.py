@@ -26,8 +26,12 @@ class Solver_GUI(QWidget):
         # Button Widgets
         self.btn_reset = QPushButton('Reset')
         self.btn_solve = QPushButton('Solve')
-        self.btn_next = QPushButton('Next')
-        self.btn_previous = QPushButton('Previous')
+        self.btn_next = QPushButton()
+        self.btn_previous = QPushButton()
+        icon_back = QIcon("img/back_button.png")
+        icon_forward = QIcon("img/forward_button.png")
+        self.btn_previous.setIcon(icon_back)
+        self.btn_next.setIcon(icon_forward)
 
         # Label Widgets
         self.lbl_stats = QLabel('STATISTICS\n\nCost of Path:\nNodes Expanded:\nSearch Depth:\nRunning Time:')
@@ -92,7 +96,7 @@ class Solver_GUI(QWidget):
             if str(board[i]) == '0':
                 self.board[i].setStyleSheet('QTextEdit {color: blue;}')
             else:
-                self.board[i].setStyleSheet('QTextEdit {color: white;}')
+                self.board[i].setStyleSheet('QTextEdit {color: none;}')
         
     def get_movement(self, from_state, to_state):
         zero_index_from = from_state.index('0')
@@ -121,7 +125,7 @@ class Solver_GUI(QWidget):
         self.lbl_move.setText(movement)
     
     def next_step(self):
-        if self.steps_index == len(self.steps) - 1: return
+        if not self.steps or self.steps_index == len(self.steps) - 1: return
         self.steps_index += 1
         self.updateBoard(self.steps[self.steps_index])
         movement = self.get_movement(self.steps[self.steps_index], self.steps[self.steps_index - 1])
