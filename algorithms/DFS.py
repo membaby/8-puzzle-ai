@@ -16,7 +16,7 @@ class DFS:
             self.frontier_U_explored.add(state)
 
             if state == self.goal_state:
-                return
+                return True
         
             for neighbor in get_neighbors(state)[::-1]:
                 if neighbor not in self.frontier_U_explored:
