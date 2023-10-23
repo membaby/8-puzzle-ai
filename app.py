@@ -21,7 +21,7 @@ class Solver_GUI(QWidget):
 
         # Dropdown Widgets
         self.cb_algorithm = QComboBox()
-        self.cb_algorithm.addItems(['Select Algorithm', 'DFS', 'BFS', 'A* (Euclidean)', 'A* (Manhattan)'])
+        self.cb_algorithm.addItems(['Select Algorithm', 'DFS', 'BFS', 'A* (Manhattan)', 'A* (Euclidean)'])
 
         # Button Widgets
         self.btn_reset = QPushButton('Reset')
@@ -43,7 +43,7 @@ class Solver_GUI(QWidget):
             self.board.append(QTextEdit())
             self.board[i].setFixedSize(85, 85)
             self.board[i].setAlignment(Qt.AlignmentFlag.AlignCenter)
-            self.board[i].setFont(QFont('Arial', 64))
+            self.board[i].setFont(QFont('Arial', 42))
             grid.addWidget(self.board[i], 1 + i//3, i%3)
 
         grid.addWidget(self.btn_previous, 4, 0)

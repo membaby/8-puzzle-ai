@@ -55,10 +55,11 @@ def is_solvable(state):
     return inversion_count % 2 == 0 #true when it is even
 
 class State:
-    def __init__(self, board, parent=None, depth=0):
+    def __init__(self, board, parent=None, depth=0, heuristic=0):
         self.board = board
         self.parent = parent
         self.depth = depth
+        self.heuristic = heuristic
     
     def __lt__(self, other):
-        return self.board < other.board
+        return self.depth + self.heuristic < other.depth + other.heuristic

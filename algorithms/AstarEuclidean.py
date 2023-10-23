@@ -13,21 +13,25 @@ class AstarEuclidean:
 
     def run_algorithm(self):
         state = State(self.initial_state)
-        hq.heappush(self.frontier, (self.heuristic(state), 0, state, state))
+        state.heuristic = self.heuristic(state)
+        hq.heappush(self.frontier, state)
+
         while self.frontier:
-            _, c, par, state = hq.heappop(self.frontier)
+            state = hq.heappop(self.frontier)
+            self.max_depth = max(self.max_depth, state.depth)
 
             if state.board in self.explored:
                 continue
 
             self.explored.add(state.board)
+
             if state.board == self.goal_state:
                 return state
 
             for neighbor in get_neighbors(state):
                 if neighbor.board not in self.explored:
-                    hq.heappush(self.frontier, (self.heuristic(neighbor) + c + 1, c + 1, state, neighbor))
-                    self.max_depth = max(self.max_depth, neighbor.depth)
+                    neighbor.heuristic = self.heuristic(neighbor)
+                    hq.heappush(self.frontier, neighbor)
 
         return False
 

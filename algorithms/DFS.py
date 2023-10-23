@@ -15,6 +15,7 @@ class DFS:
         self.frontier.append(State(self.initial_state))
         while self.frontier:
             state = self.frontier.pop()
+            self.max_depth = max(self.max_depth, state.depth)
             self.explored.add(state.board)
             self.frontier_U_explored.add(state.board)
 
@@ -25,6 +26,5 @@ class DFS:
                 if neighbor.board not in self.frontier_U_explored:
                     self.frontier.append(neighbor)   
                     self.frontier_U_explored.add(neighbor.board)
-                    self.max_depth = max(self.max_depth, neighbor.depth)
 
         return False
