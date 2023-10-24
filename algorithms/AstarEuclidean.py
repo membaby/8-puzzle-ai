@@ -17,6 +17,7 @@ class AstarEuclidean:
         state = State(self.initial_state)
         state.heuristic = self.heuristic(state)
         hq.heappush(self.frontier, state)
+        self.frontier_U_explored.add(state.board)
 
         while self.frontier:
             state = hq.heappop(self.frontier)

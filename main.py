@@ -76,7 +76,7 @@ if __name__ == '__main__':
     print()
     movements = []
     if solution:
-        PRINT_STEPS = True # Set to False to disable printing steps
+        PRINT_STEPS = True  # Set to False to disable printing steps
         if steps and PRINT_STEPS:
             for i in range(len(steps)):
                 if i == len(steps) - 1: break

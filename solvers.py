@@ -19,11 +19,11 @@ class Solver:
             solver = AstarManhattan(initial_state, goal_state)
         else:
             solver = AstarEuclidean(initial_state, goal_state)
-        res=False
+        res = False
         start_time = time.time()
         solution = is_solvable(initial_state)
         if solution:
-            res= solver.run_algorithm()
+            res = solver.run_algorithm()
         end_time = time.time()
         expanded = solver.explored
         running_time = round(end_time - start_time, 5)
@@ -31,14 +31,9 @@ class Solver:
         if res:
             # the path to the goal (list of all states)
             steps = [res.board]
-            while res.parent != None:
+            while res.parent is not None:
                 steps.append(res.parent.board)
                 res = res.parent
-            # back_tracked_node = goal_state
-            # while back_tracked_node != initial_state and back_tracked_node in solver.parent_map:
-            #     steps.append(solver.parent_map[back_tracked_node])
-            #     back_tracked_node = solver.parent_map[back_tracked_node]
-            
             steps.reverse()
             return solution, steps, len(steps)-1, len(expanded), solver.max_depth, running_time
 
