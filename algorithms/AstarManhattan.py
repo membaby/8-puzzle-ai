@@ -14,7 +14,7 @@ class AstarManhattan:
 
     def run_algorithm(self):
         state = State(self.initial_state)
-        state.heuristic = self.heuristic(state)
+        self.initial_heuristic(state)
         hq.heappush(self.frontier, state)
         self.frontier_U_explored.add(state.board)
 
@@ -32,25 +32,35 @@ class AstarManhattan:
 
             for neighbor in get_neighbors(state):
                 if neighbor.board not in self.frontier_U_explored:
-                    neighbor.heuristic = self.heuristic(neighbor)
+                    self.heuristic(state, neighbor)
                     hq.heappush(self.frontier, neighbor)
                     self.depth_map[neighbor.board] = neighbor.depth
                     self.frontier_U_explored.add(neighbor.board)
                 elif neighbor.board not in self.explored and neighbor.depth < self.depth_map[neighbor.board]:
-                    neighbor.heuristic = self.heuristic(neighbor)
+                    self.heuristic(state, neighbor)
                     hq.heappush(self.frontier, neighbor)
                     self.depth_map[neighbor.board] = neighbor.depth
 
         return False
 
-    def heuristic(self, state):
+    def initial_heuristic(self, state):
         h = 0
         for i in range(9):
-            if state.board[i] == '0':
-                continue
-            goal_x = int(self.goal_state[i]) // 3
-            goal_y = int(self.goal_state[i]) % 3
-            current_x = int(state.board[i]) // 3
-            current_y = int(state.board[i]) % 3
-            h += abs(goal_x - current_x) + abs(goal_y - current_y)
-        return h
+            if state.board[i] != '0':
+                h += self.manhattan(i, state.board[i])
+        state.heuristic = h
+
+    def heuristic(self, prev_state, curr_state):
+        h = prev_state.heuristic
+        key1 = int(prev_state.board[-1])
+        key2 = int(curr_state.board[-1])
+        h -= self.manhattan(key2, prev_state.board[key2])
+        h += self.manhattan(key1, curr_state.board[key1])
+        curr_state.heuristic = h
+
+    def manhattan(self, key, num):
+        current_x = key // 3
+        current_y = key % 3
+        goal_x = int(self.goal_state[int(num)]) // 3
+        goal_y = int(self.goal_state[int(num)]) % 3
+        return abs(goal_x - current_x) + abs(goal_y - current_y)
