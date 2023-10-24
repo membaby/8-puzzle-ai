@@ -10,6 +10,8 @@ class AstarEuclidean:
         self.frontier = []
         self.explored = set()
         self.max_depth = 0
+        self.frontier_U_explored = set()
+        self.depth_map = {initial_state: 0}
 
     def run_algorithm(self):
         state = State(self.initial_state)
@@ -30,35 +32,27 @@ class AstarEuclidean:
 
             for neighbor in get_neighbors(state):
                 if neighbor.board not in self.explored:
-                    neighbor.heuristic = self.heuristic(neighbor)
-                    hq.heappush(self.frontier, neighbor)
+                    if neighbor.board not in self.frontier_U_explored:
+                        neighbor.heuristic = self.heuristic(neighbor)
+                        hq.heappush(self.frontier, neighbor)
+                        self.depth_map[neighbor.board] = neighbor.depth
+                        self.frontier_U_explored.add(neighbor.board)
+                    elif (neighbor.board not in self.explored and
+                          neighbor.depth < self.depth_map[neighbor.board]):
+                        neighbor.heuristic = self.heuristic(neighbor)
+                        hq.heappush(self.frontier, neighbor)
+                        self.depth_map[neighbor.board] = neighbor.depth
 
         return False
-
 
     def heuristic(self, state):
         h = 0
         for i in range(9):
+            if state.board[i] == '0':
+                continue
             goal_x = int(self.goal_state[i]) // 3
             goal_y = int(self.goal_state[i]) % 3
             current_x = int(state.board[i]) // 3
             current_y = int(state.board[i]) % 3
             h += math.sqrt((goal_x - current_x) ** 2 + (goal_y - current_y) ** 2)
         return h
-
-
-# initial_state = "1423056784"
-# goal_state = "1234567808"
-# solver = AstarEuclidean(initial_state, goal_state)
-# par = solver.run_algorithm()
-# print(par)
-# print(len(par))
-# path = []
-# cur = goal_state
-# while par[cur] != cur:
-#     path.append(cur)
-#     cur = par[cur]
-# path.append(initial_state)
-# path.reverse()
-# print(path)
-# print(len(path))

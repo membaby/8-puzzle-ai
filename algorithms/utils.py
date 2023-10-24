@@ -16,7 +16,8 @@ def get_neighbors(state) -> list:
 
 def move_up(state):
     key = int(state.board[-1])
-    if key < 3: return None
+    if key < 3:
+        return None
     board_list = list(state.board)
     board_list[key], board_list[key - 3] = board_list[key - 3], board_list[key]
     board_list[-1] = str(key - 3)
@@ -24,7 +25,8 @@ def move_up(state):
 
 def move_down(state):
     key = int(state.board[-1])
-    if key > 5: return None
+    if key > 5:
+        return None
     board_list = list(state.board)
     board_list[key], board_list[key + 3] = board_list[key + 3], board_list[key]
     board_list[-1] = str(key + 3)
@@ -32,7 +34,8 @@ def move_down(state):
 
 def move_left(state):
     key = int(state.board[-1])
-    if key % 3 == 0: return None
+    if key % 3 == 0:
+        return None
     board_list = list(state.board)
     board_list[key], board_list[key - 1] = board_list[key - 1], board_list[key]
     board_list[-1] = str(key - 1)
@@ -40,7 +43,8 @@ def move_left(state):
 
 def move_right(state):
     key = int(state.board[-1])
-    if key % 3 == 2: return None
+    if key % 3 == 2:
+        return None
     board_list = list(state.board)
     board_list[key], board_list[key + 1] = board_list[key + 1], board_list[key]
     board_list[-1] = str(key + 1)
@@ -52,7 +56,7 @@ def is_solvable(state):
         for j in range(i + 1, 9):
             if state[i] != '0' and state[j] != '0' and state[i] > state[j]:
                 inversion_count += 1
-    return inversion_count % 2 == 0 #true when it is even
+    return inversion_count % 2 == 0  # true when it is even
 
 class State:
     def __init__(self, board, parent=None, depth=0, heuristic=0):
@@ -60,6 +64,6 @@ class State:
         self.parent = parent
         self.depth = depth
         self.heuristic = heuristic
-    
+
     def __lt__(self, other):
         return self.depth + self.heuristic < other.depth + other.heuristic
