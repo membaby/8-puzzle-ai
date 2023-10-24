@@ -31,17 +31,15 @@ class AstarEuclidean:
                 return state
 
             for neighbor in get_neighbors(state):
-                if neighbor.board not in self.explored:
-                    if neighbor.board not in self.frontier_U_explored:
-                        neighbor.heuristic = self.heuristic(neighbor)
-                        hq.heappush(self.frontier, neighbor)
-                        self.depth_map[neighbor.board] = neighbor.depth
-                        self.frontier_U_explored.add(neighbor.board)
-                    elif (neighbor.board not in self.explored and
-                          neighbor.depth < self.depth_map[neighbor.board]):
-                        neighbor.heuristic = self.heuristic(neighbor)
-                        hq.heappush(self.frontier, neighbor)
-                        self.depth_map[neighbor.board] = neighbor.depth
+                if neighbor.board not in self.frontier_U_explored:
+                    neighbor.heuristic = self.heuristic(neighbor)
+                    hq.heappush(self.frontier, neighbor)
+                    self.depth_map[neighbor.board] = neighbor.depth
+                    self.frontier_U_explored.add(neighbor.board)
+                elif neighbor.board not in self.explored and neighbor.depth < self.depth_map[neighbor.board]:
+                    neighbor.heuristic = self.heuristic(neighbor)
+                    hq.heappush(self.frontier, neighbor)
+                    self.depth_map[neighbor.board] = neighbor.depth
 
         return False
 
