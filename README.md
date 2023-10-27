@@ -19,7 +19,12 @@ The project implements the following search algorithms:
 - Depth-First Search (DFS)
 - A* Search
   - Manhattan Heuristic
-  - Euclinean Heuristic
+  - Euclidean Heuristic
+
+<div align="center">
+  <img src="https://github.com/membaby/8-puzzle-ai/assets/44979898/b391ed26-137f-447e-a8d7-a41937176c2b" alt="Performance Comparison">
+</div>
+
 
 ## Getting Started
 To get started with this project, follow the instructions below.
@@ -31,7 +36,7 @@ To get started with this project, follow the instructions below.
 ### Installation
 1. Clone the repository to your local machine.
      ```
-     git clone https://github.com/your-username/8-puzzle-solver.git
+     git clone https://github.com/membaby/8-puzzle-solver.git
 2.  Install the required dependencies, including PyQt6.
      ```
      pip install PyQt6
